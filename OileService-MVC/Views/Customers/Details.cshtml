@@ -1,0 +1,154 @@
+﻿@using System.Globalization
+@model OilChangeApp.Controllers.CustomerDetailsViewModel
+
+<div class="container" style="direction: rtl; text-align: right;">
+    <div class="row mb-4">
+        <!-- ستون سمت راست: فرم ثبت سرویس جدید -->
+        <div class="col-md-6 order-md-1">
+            <div class="card">
+                <div class="card-header">
+                    <h3>ثبت سرویس جدید</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="AddService" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="form-group">
+                            <label asp-for="SelectedOilId">انتخاب روغن</label>
+                            <select asp-for="SelectedOilId" class="form-control" asp-items="Model.Oils">
+                                <option value="">انتخاب کنید</option>
+                            </select>
+                            <span asp-validation-for="SelectedOilId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Kilometers">کیلومتر سرویس</label>
+                            <input asp-for="Kilometers" class="form-control number-input" inputmode="numeric" />
+                            <span asp-validation-for="Kilometers" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="NextServiceKilometers">کیلومتر بعدی سرویس</label>
+                            <input asp-for="NextServiceKilometers" class="form-control number-input" inputmode="numeric" />
+                            <span asp-validation-for="NextServiceKilometers" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>انتخاب سرویس‌ها</label>
+                            @for (int i = 0; i < Model.ServiceList.Count; i++)
+                            {
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input" type="checkbox"
+                                           name="SelectedServiceIds"
+                                           value="@Model.ServiceList[i].Id"
+                                           id="service_@Model.ServiceList[i].Id"
+                                           style="margin-left: 0; margin-right: 5px;" />
+                                    <label class="form-check-label" for="service_@Model.ServiceList[i].Id">
+                                        @Model.ServiceList[i].Name
+                                    </label>
+                                </div>
+                            }
+                            <span asp-validation-for="SelectedServiceIds" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary">ثبت سرویس</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- ستون سمت چپ: اطلاعات مشتری -->
+        <div class="col-md-6 order-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h2>جزئیات مشتری</h2>
+                </div>
+                <div class="card-body">
+                    <p><strong>نام:</strong> @Model.Name</p>
+                    <p><strong>شماره تلفن:</strong> @Model.PhoneNumber</p>
+                    <p><strong>خودرو:</strong> @Model.CarName</p>
+                </div>
+            </div>
+        </div>
+
+      
+    </div>
+
+    <hr />
+
+    <!-- تاریخچه سرویس‌ها -->
+    <section>
+        <h3>تاریخچه سرویس‌ها</h3>
+        @if (Model.CustomerServiceHistory != null && Model.CustomerServiceHistory.Any())
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>تاریخ سرویس</th>
+                        <th>کیلومتر سرویس</th>
+                        <th>کیلومتر بعدی سرویس</th>
+                        <th>روغن موتور</th>
+                        <th>سرویس‌های انجام‌شده</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cs in Model.CustomerServiceHistory)
+                    {
+                        <tr>
+                            <td>@ToPersianDate(cs.ServiceDate)</td>
+                            <td>@cs.Kilometers.ToString("N0")</td>
+                            <td>@cs.NextServiceKilometers.ToString("N0")</td>
+                            <td>@cs.OilName</td>
+                            <td>@cs.ServicesName</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>هیچ سابقه سرویسی برای این مشتری وجود ندارد.</p>
+        }
+    </section>
+
+    <hr />
+
+    <p class="mt-4">
+        <a asp-action="Index" class="btn btn-secondary">بازگشت به لیست مشتریان</a>
+    </p>
+</div>
+@functions {
+    public string ToPersianDate(DateTime date)
+    {
+        PersianCalendar pc = new PersianCalendar();
+        int year = pc.GetYear(date);
+        int month = pc.GetMonth(date);
+        int day = pc.GetDayOfMonth(date);
+
+        return string.Format("{0}/{1}/{2}", year, month.ToString("00"), day.ToString("00"));
+    }
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var numberInputs = document.querySelectorAll('.number-input');
+
+            numberInputs.forEach(function(input) {
+                input.addEventListener('input', function(e) {
+                    // حذف تمامی کاراکترهای غیر عددی
+                    var value = this.value.replace(/\D/g, '');
+
+                    // افزودن جداکننده هزارگان
+                    var formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+                    this.value = formattedValue;
+                });
+            });
+        });
+    </script>
+}
+

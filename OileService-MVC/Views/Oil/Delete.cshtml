@@ -1,0 +1,29 @@
+﻿@using OilChangeApp.Data
+@model Oil
+
+@{
+    ViewData["Title"] = "حذف روغن";
+}
+
+<div class="container" style="direction: rtl; text-align: right;">
+    <h2>@ViewData["Title"]</h2>
+
+    <h3>آیا مطمئن هستید که می‌خواهید این روغن را حذف کنید؟</h3>
+
+    <div>
+        <dl class="row">
+            <dt class="col-sm-2">نام</dt>
+            <dd class="col-sm-10">@Model.Name</dd>
+
+            <dt class="col-sm-2">توضیحات</dt>
+            <dd class="col-sm-10">@Model.Description</dd>
+        </dl>
+    </div>
+
+    <form asp-action="DeleteConfirmed" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">حذف</button>
+        <a asp-action="Index" class="btn btn-secondary">بازگشت به لیست</a>
+    </form>
+</div>

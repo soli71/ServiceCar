@@ -1,0 +1,26 @@
+﻿@using OilChangeApp.Data
+@model Oil
+
+@{
+    ViewData["Title"] = "جزئیات روغن";
+}
+
+<div class="container" style="direction: rtl; text-align: right;">
+    <h2>@ViewData["Title"]</h2>
+
+    <div>
+        <dl class="row">
+            <dt class="col-sm-2">نام</dt>
+            <dd class="col-sm-10">@Model.Name</dd>
+
+            <dt class="col-sm-2">توضیحات</dt>
+            <dd class="col-sm-10">@Model.Description</dd>
+        </dl>
+    </div>
+
+    <p>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">ویرایش</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">حذف</a>
+        <a asp-action="Index" class="btn btn-secondary">بازگشت به لیست</a>
+    </p>
+</div>

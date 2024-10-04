@@ -1,0 +1,37 @@
+﻿@using OilChangeApp.Data
+@model IEnumerable<Oil>
+@{
+    ViewData["Title"] = "لیست روغن‌ها";
+}
+
+<div class="container" style="direction: rtl; text-align: right;">
+    <h2>@ViewData["Title"]</h2>
+
+    <p>
+        <a asp-action="Create" class="btn btn-primary">ایجاد روغن جدید</a>
+    </p>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>نام</th>
+                <th>توضیحات</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var oil in Model)
+            {
+                <tr>
+                    <td>@oil.Name</td>
+                    <td>@oil.Description</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@oil.Id" class="btn btn-sm btn-warning">ویرایش</a>
+                        <a asp-action="Details" asp-route-id="@oil.Id" class="btn btn-sm btn-info">جزئیات</a>
+                        <a asp-action="Delete" asp-route-id="@oil.Id" class="btn btn-sm btn-danger">حذف</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
