@@ -1,37 +1,52 @@
-﻿@using OilChangeApp.Data
+﻿<!-- Views/Oils/Index.cshtml -->
+@using OilChangeApp.Data
 @model IEnumerable<Oil>
+
+@section Styles {
+    <style>
+        .card {
+            margin-bottom: 20px;
+        }
+    </style>
+}
+
 @{
     ViewData["Title"] = "لیست روغن‌ها";
 }
 
-<div class="container" style="direction: rtl; text-align: right;">
-    <h2>@ViewData["Title"]</h2>
+<div class="container">
+    <h2 class="mb-4">@ViewData["Title"]</h2>
 
     <p>
-        <a asp-action="Create" class="btn btn-primary">ایجاد روغن جدید</a>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> ایجاد روغن جدید
+        </a>
     </p>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>نام</th>
-                <th>توضیحات</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var oil in Model)
-            {
-                <tr>
-                    <td>@oil.Name</td>
-                    <td>@oil.Description</td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@oil.Id" class="btn btn-sm btn-warning">ویرایش</a>
-                        <a asp-action="Details" asp-route-id="@oil.Id" class="btn btn-sm btn-info">جزئیات</a>
-                        <a asp-action="Delete" asp-route-id="@oil.Id" class="btn btn-sm btn-danger">حذف</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="row">
+        @foreach (var oil in Model)
+        {
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">@oil.Name</h5>
+                        <p class="card-text">@oil.Description</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="btn-group" role="group">
+                            <a asp-action="Details" asp-route-id="@oil.Id" class="btn btn-info btn-sm">
+                                <i class="fas fa-info-circle"></i> جزئیات
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@oil.Id" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i> ویرایش
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@oil.Id" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i> حذف
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>

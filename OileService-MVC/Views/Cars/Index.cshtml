@@ -1,38 +1,49 @@
-﻿@using OilChangeApp.Data
+﻿<!-- Views/Cars/Index.cshtml -->
+@using OilChangeApp.Data
 @model IEnumerable<Car>
+
+@section Styles {
+    <style>
+        .card {
+            margin-bottom: 20px;
+        }
+    </style>
+}
 
 @{
     ViewData["Title"] = "لیست خودروها";
 }
 
-<div class="container" style="direction: rtl; text-align: right;">
+<div class="container">
     <h2 class="mb-4">@ViewData["Title"]</h2>
 
     <p>
-        <a asp-action="Create" class="btn btn-success">ایجاد خودروی جدید</a>
+        <a asp-action="Create" class="btn btn-success">
+            <i class="fas fa-plus"></i> ایجاد خودروی جدید
+        </a>
     </p>
 
-    <table class="table table-striped table-bordered">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">نام خودرو</th>
-                <th scope="col" style="width: 150px;">عملیات</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var car in Model)
-            {
-                <tr>
-                    <td>@car.Name</td>
-                    <td>
+    <div class="row">
+        @foreach (var car in Model)
+        {
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@car.Name</h5>
                         <div class="btn-group" role="group">
-                            <a asp-action="Details" asp-route-id="@car.Id" class="btn btn-info btn-sm">جزئیات</a>
-                            <a asp-action="Edit" asp-route-id="@car.Id" class="btn btn-warning btn-sm">ویرایش</a>
-                            <a asp-action="Delete" asp-route-id="@car.Id" class="btn btn-danger btn-sm">حذف</a>
+                            <a asp-action="Details" asp-route-id="@car.Id" class="btn btn-info btn-sm">
+                                <i class="fas fa-info-circle"></i> جزئیات
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@car.Id" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i> ویرایش
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@car.Id" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i> حذف
+                            </a>
                         </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
