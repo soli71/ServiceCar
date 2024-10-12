@@ -5,20 +5,23 @@
     ViewData["Title"] = "ویرایش خودرو";
 }
 
-<div class="container" style="direction: rtl; text-align: right;">
-    <h2>@ViewData["Title"]</h2>
+<div class=" col-12 col-md-10 d-flex mx-auto justify-content-center flex-column">
+    <h3 class="mb-4 fs-5 fw-bold border-bottom pb-3">@ViewData["Title"]</h3>
 
     <form asp-action="Edit" method="post">
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="Id" />
-        <div class="form-group">
-            <label asp-for="Name"></label>
-            <input asp-for="Name" class="form-control" />
+        <div class="form-group col-12 col-md-4">
+            <label asp-for="Name" class="font14">نام</label>
+            <input asp-for="Name" class="form-control no-box-shadow" />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
-        <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
-        <a asp-action="Index" class="btn btn-secondary">بازگشت به لیست</a>
-    </form>
+           <div class="form-group col-12 col-md-4 d-flex justify-content-center">
+
+            <button type="submit" class="btn btn-outline-primary col-4">ذخیره تغییرات</button>
+            <a asp-action="Index" class="btn btn-outline-secondary mx-3 col-4">بازگشت</a>
+        </div>
+      </form>
 </div>
 
 @section Scripts {
