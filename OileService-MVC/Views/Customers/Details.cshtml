@@ -6,32 +6,30 @@
         <!-- ستون سمت راست: فرم ثبت سرویس جدید -->
         <div class="col-md-6 order-md-1">
             <div class="card">
-                <div class="card-header">
-                    <h3>ثبت سرویس جدید</h3>
-                </div>
-                <div class="card-body">
+                     <div class=" fw-bold border-bottom pb-2 px-3 pt-3" style="font-weight:600;font-size:18px">ثبت سرویس جدید</div>
+                 <div class="card-body">
                     <form asp-action="AddService" method="post">
                         @Html.AntiForgeryToken()
                         <input type="hidden" asp-for="Id" />
 
                         <div class="form-group">
-                            <label asp-for="SelectedOilId">انتخاب روغن</label>
-                            <select asp-for="SelectedOilId" class="form-control" asp-items="Model.Oils">
+                            <label asp-for="SelectedOilId" class="font14" >انتخاب روغن</label>
+                            <select asp-for="SelectedOilId" class="form-control no-box-shadow font14" asp-items="Model.Oils">
                                 <option value="">انتخاب کنید</option>
                             </select>
-                            <span asp-validation-for="SelectedOilId" class="text-danger"></span>
+                            <span asp-validation-for="SelectedOilId" class="text-danger font14"></span>
                         </div>
 
                         <div class="form-group">
-                            <label asp-for="Kilometers">کیلومتر سرویس</label>
-                            <input asp-for="Kilometers" class="form-control number-input" inputmode="numeric" />
-                            <span asp-validation-for="Kilometers" class="text-danger"></span>
+                            <label asp-for="Kilometers" class="font14">کیلومتر سرویس</label>
+                            <input asp-for="Kilometers" class="form-control no-box-shadow number-input" inputmode="numeric" />
+                            <span asp-validation-for="Kilometers" class="text-danger font14"></span>
                         </div>
 
                         <div class="form-group">
-                            <label asp-for="NextServiceKilometers">کیلومتر بعدی سرویس</label>
-                            <input asp-for="NextServiceKilometers" class="form-control number-input" inputmode="numeric" />
-                            <span asp-validation-for="NextServiceKilometers" class="text-danger"></span>
+                            <label asp-for="NextServiceKilometers" class="font14">کیلومتر بعدی سرویس</label>
+                            <input asp-for="NextServiceKilometers" class="form-control no-box-shadow number-input" inputmode="numeric" />
+                            <span asp-validation-for="NextServiceKilometers" class="text-danger font14"></span>
                         </div>
 
                         <div class="form-group">
@@ -39,33 +37,31 @@
                             @for (int i = 0; i < Model.ServiceList.Count; i++)
                             {
                                 <div class="form-check d-flex align-items-center">
-                                    <input class="form-check-input" type="checkbox"
+                                    <input class="form-check-input no-box-shadow" type="checkbox"
                                            name="SelectedServiceIds"
                                            value="@Model.ServiceList[i].Id"
                                            id="service_@Model.ServiceList[i].Id"
                                            style="margin-left: 0; margin-right: 5px;" />
-                                    <label class="form-check-label" for="service_@Model.ServiceList[i].Id">
+                                    <label class="form-check-label mx-4 my-1" style="font-size:15px"   for="service_@Model.ServiceList[i].Id">
                                         @Model.ServiceList[i].Name
                                     </label>
                                 </div>
                             }
                             <span asp-validation-for="SelectedServiceIds" class="text-danger"></span>
                         </div>
-                        <button type="submit" class="btn btn-primary">ثبت سرویس</button>
+                        <button type="submit" class="btn btn-outline-primary">ثبت سرویس</button>
                     </form>
                 </div>
             </div>
         </div>
         <!-- ستون سمت چپ: اطلاعات مشتری -->
-        <div class="col-md-6 order-md-2">
+        <div class="col-md-6 order-md-2 mt-3 mt-md-0">
             <div class="card">
-                <div class="card-header">
-                    <h2>جزئیات مشتری</h2>
-                </div>
-                <div class="card-body">
-                    <p><strong>نام:</strong> @Model.Name</p>
-                    <p><strong>شماره تلفن:</strong> @Model.PhoneNumber</p>
-                    <p><strong>خودرو:</strong> @Model.CarName</p>
+                     <div class="border-bottom pb-2 px-3 pt-3" style="font-weight:600;font-size:18px">جزئیات مشتری    </div>
+                 <div class="card-body">
+                    <div class="">نام : @Model.Name</div>
+                    <div class="my-3">شماره تلفن : @Model.PhoneNumber</div>
+                    <div>خودرو : @Model.CarName</div>
                 </div>
             </div>
         </div>
@@ -77,7 +73,7 @@
 
     <!-- تاریخچه سرویس‌ها -->
     <section>
-        <h3>تاریخچه سرویس‌ها</h3>
+        <h3 class=" fw-bold pb-2 px-3 pt-3" style="font-weight:600;font-size:22px">تاریخچه سرویس‌ها</h3>
         @if (Model.CustomerServiceHistory != null && Model.CustomerServiceHistory.Any())
         {
             <table class="table table-striped">
@@ -113,7 +109,7 @@
     <hr />
 
     <p class="mt-4">
-        <a asp-action="Index" class="btn btn-secondary">بازگشت به لیست مشتریان</a>
+        <a asp-action="Index" class="btn btn-outline-secondary">بازگشت </a>
     </p>
 </div>
 @functions {

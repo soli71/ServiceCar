@@ -5,33 +5,36 @@
     ViewData["Title"] = "ویرایش مشتری";
 }
 
-<div class="container" style="direction: rtl; text-align: right;">
-    <h2>@ViewData["Title"]</h2>
+<div class=" col-12 col-md-10 d-flex mx-auto justify-content-center flex-column">
+    <h2 class="mb-4 fs-5 fw-bold border-bottom pb-3">@ViewData["Title"]</h2>
 
     <form asp-action="Edit" method="post">
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="Id" />
-        <div class="form-group">
-            <label asp-for="Name"></label>
+        <div class="form-group col-12 col-md-4">
+            <label asp-for="Name" class="font14">نام</label>
             <input asp-for="Name" class="form-control" />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
-        <div class="form-group">
-            <label asp-for="PhoneNumber"></label>
+        <div class="form-group col-12 col-md-4">
+            <label asp-for="PhoneNumber" class="font14">شماره تلفن</label>
             <input asp-for="PhoneNumber" class="form-control" />
             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
         </div>
 
-        <div class="form-group">
-            <label asp-for="SelectedCarId">انتخاب خودرو</label>
-            <select asp-for="SelectedCarId" class="form-control" asp-items="Model.Cars">
+        <div class="form-group col-12 col-md-4">
+            <label asp-for="SelectedCarId" class="font14">انتخاب خودرو</label>
+            <select asp-for="SelectedCarId" class="form-control font14" style="height:40px" asp-items="Model.Cars">
                 <option value="">انتخاب کنید</option>
             </select>
             <span asp-validation-for="SelectedCarId" class="text-danger"></span>
         </div>
 
-        <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
-        <a asp-action="Index" class="btn btn-secondary">بازگشت به لیست</a>
+        <div class="form-group col-12 col-md-4 d-flex justify-content-center">
+
+            <button type="submit" class="btn btn-outline-primary col-4">ذخیره  </button>
+            <a asp-action="Index" class="btn btn-outline-secondary mx-3 col-4">بازگشت</a>
+        </div>
     </form>
 </div>
 
