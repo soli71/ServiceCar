@@ -7,8 +7,7 @@ body {
     text-align: right;
 }
 html, body {
-    height: 100%;
-    margin: 0;
+     margin: 0;
     display: flex;
     flex-direction: column;
 }
@@ -37,11 +36,7 @@ html, body {
 }
 
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
+
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
@@ -75,4 +70,9 @@ tr:nth-child(even) {
 ::-webkit-scrollbar-thumb {
     background: #494949;
     border-radius: 10px;
+}
+@media (max-width: 768px) {
+    .header-mobile {
+        margin-right: -35px
+    }
 }

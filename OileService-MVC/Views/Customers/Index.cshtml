@@ -18,7 +18,8 @@
     <h3 class="mb-4 fs-5 fw-bold border-bottom pb-2">@ViewData["Title"]</h3>
 
     <form asp-action="Index" method="get" class=" d-flex flex-column mb-3">
-        <div class="input-group mb-2 col-3 " style="padding-right:0">            <input type="text" style="width:70px !important; height:44px;border-top-right-radius:8px;border-bottom-right-radius:8px;border-top-left-radius:0;border-bottom-left-radius:0" name="searchString" class="form-control no-box-shadow " placeholder="جستجوی مشتری..." value="@ViewData["CurrentFilter"]" />
+        <div class="input-group mb-2 col-12 col-md-3 " style="padding-right:0">        
+            <input type="text" style="width:70px !important; height:44px;border-top-right-radius:8px;border-bottom-right-radius:8px;border-top-left-radius:0;border-bottom-left-radius:0" name="searchString" class="form-control no-box-shadow " placeholder="جستجوی مشتری..." value="@ViewData["CurrentFilter"]" />
             <div class="input-group-append">
                 <button type="submit" class="btn btn-primary " style="border-top-right-radius:0;border-bottom-right-radius:0;border-top-left-radius:8px;border-bottom-left-radius:8px">
                       <i class="fas fa-search"></i>
