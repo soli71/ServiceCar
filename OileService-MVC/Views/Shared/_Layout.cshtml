@@ -1,4 +1,5 @@
-﻿<!-- Views/Shared/_Layout.cshtml -->
+﻿@using System.Globalization
+<!-- Views/Shared/_Layout.cshtml -->
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -33,6 +34,9 @@
                 <li class="nav-item @(ViewContext.RouteData.Values["controller"].ToString() == "Oil" ? "active" : "")">
                     <a class="nav-link" href="/Oil">روغن‌ها</a>
                 </li>
+                <li class="nav-item">
+                    <h6 class="text-light nav-link"> @ToPersianDate(DateTime.Now)</h6>
+                </li>
             </ul>
         </div>
         <a class="text-white fs-5 fw-bold text-decoration-none mx-auto mt-2 mt-md-0" href="/">سامانه تعویض روغن</a>
@@ -55,3 +59,15 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+
+@functions {
+    public string ToPersianDate(DateTime date)
+    {
+        PersianCalendar pc = new PersianCalendar();
+        int year = pc.GetYear(date);
+        int month = pc.GetMonth(date);
+        int day = pc.GetDayOfMonth(date);
+
+        return string.Format("{0}/{1}/{2}", year, month.ToString("00"), day.ToString("00"));
+    }
+}
