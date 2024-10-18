@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using OilChangeApp.Data;
+using OileService_MVC.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<OilChangeDbContext>(options =>
     options.UseSqlite("Data Source=oilChangeData.db"));
+builder.Services.AddScoped<ISmsService, SmsService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using OilChangeApp.Data;
+using OileService_MVC.Services;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace OilChangeApp.Controllers;
@@ -36,10 +39,11 @@ public class EditCustomerViewModel
 public class CustomersController : Controller
 {
     private readonly OilChangeDbContext _context;
-
-    public CustomersController(OilChangeDbContext context)
+    private readonly ISmsService _smsService;
+    public CustomersController(OilChangeDbContext context, ISmsService smsService)
     {
         _context = context;
+        _smsService = smsService;
     }
 
     // GET: Customers
@@ -155,7 +159,7 @@ public class CustomersController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult AddService(CustomerDetailsViewModel model)
+    public async Task<IActionResult> AddService(CustomerDetailsViewModel model)
     {
         if (ModelState.IsValid)
         {
@@ -196,9 +200,17 @@ public class CustomersController : Controller
 
             customerService.CustomerServiceDetails = serviceList;
             _context.CustomerServices.Add(customerService);
-            _context.SaveChanges();
 
-            // بازگشت به صفحه جزئیات مشتری با اطلاعات به‌روزشده
+
+            _context.SaveChanges();
+            
+            var customer=_context.Customers.Find(model.Id);
+            var services=_context.Services.Where(s => model.SelectedServiceIds.Contains(s.Id)).Select(s => s.ServiceName).ToList();
+            var concatServices = string.Join(",", services);
+            var message = $"مشتری گرامی {customer.Name??""}\r\n سرویس{concatServices} با موفقیت انجام شد .\r\n کیلومتر فعلی : {model.Kilometers} \r\n کیلومتر بعدی : {model.NextServiceKilometers} \r\n تعویض روغنی حسن \r\n {ToPersianDate(DateTime.Now)}";
+
+            await _smsService.SendAsync(customer.PhoneNumber, message);
+      
             return RedirectToAction(nameof(Details), new { id = model.Id });
         }
 
@@ -207,6 +219,16 @@ public class CustomersController : Controller
         return View("Details", viewModel);
     }
 
+
+    public string ToPersianDate(DateTime date)
+    {
+        PersianCalendar pc = new PersianCalendar();
+        int year = pc.GetYear(date);
+        int month = pc.GetMonth(date);
+        int day = pc.GetDayOfMonth(date);
+
+        return string.Format("{0}/{1}/{2}", year, month.ToString("00"), day.ToString("00"));
+    }
     // GET: Customers/Edit/5
     public IActionResult Edit(int? id)
     {
