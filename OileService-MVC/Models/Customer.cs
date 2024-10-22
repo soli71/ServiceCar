@@ -66,6 +66,7 @@ namespace OilChangeApp.Data
         public DbSet<Service> Services { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<CustomerService> CustomerServices { get; set; }
+        public DbSet<CustomerServiceDetail> CustomerServiceDetail { get; set; }
         public DbSet<Oil> Oils { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

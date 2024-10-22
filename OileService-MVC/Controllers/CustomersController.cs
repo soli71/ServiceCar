@@ -40,6 +40,7 @@ public class CustomersController : Controller
 {
     private readonly OilChangeDbContext _context;
     private readonly ISmsService _smsService;
+
     public CustomersController(OilChangeDbContext context, ISmsService smsService)
     {
         _context = context;
@@ -201,16 +202,18 @@ public class CustomersController : Controller
             customerService.CustomerServiceDetails = serviceList;
             _context.CustomerServices.Add(customerService);
 
-
             _context.SaveChanges();
-            
-            var customer=_context.Customers.Find(model.Id);
-            var services=_context.Services.Where(s => model.SelectedServiceIds.Contains(s.Id)).Select(s => s.ServiceName).ToList();
-            var concatServices = string.Join(",", services);
-            var message = $"مشتری گرامی {customer.Name??""}\r\n سرویس{concatServices} با موفقیت انجام شد .\r\n کیلومتر فعلی : {model.Kilometers} \r\n کیلومتر بعدی : {model.NextServiceKilometers} \r\n تعویض روغنی حسن \r\n {ToPersianDate(DateTime.Now)}";
+
+            var customer = _context.Customers.Find(model.Id);
+            var services = _context.Services.Where(s => model.SelectedServiceIds.Contains(s.Id)).Select(s => s.ServiceName).ToList();
+
+            var oil = _context.Oils.Find(model.SelectedOilId);
+
+            var concatServices = $" {string.Join(",", services)}";
+            var message = $"مشتری گرامی {customer.Name ?? ""}\r\n سرویس {concatServices} با موفقیت انجام شد .\r\n روغن {oil?.Name ?? ""}\r\n کیلومتر فعلی : {model.Kilometers} \r\n کیلومتر بعدی : {model.NextServiceKilometers} \r\n {ToPersianDate(DateTime.Now)} \r\n";
 
             await _smsService.SendAsync(customer.PhoneNumber, message);
-      
+
             return RedirectToAction(nameof(Details), new { id = model.Id });
         }
 
@@ -218,7 +221,6 @@ public class CustomersController : Controller
 
         return View("Details", viewModel);
     }
-
 
     public string ToPersianDate(DateTime date)
     {
@@ -229,6 +231,7 @@ public class CustomersController : Controller
 
         return string.Format("{0}/{1}/{2}", year, month.ToString("00"), day.ToString("00"));
     }
+
     // GET: Customers/Edit/5
     public IActionResult Edit(int? id)
     {
@@ -318,14 +321,15 @@ public class CustomersController : Controller
         return View(customer);
     }
 
-    // POST: Customers/Delete/5
-    [HttpPost, ActionName("Delete")]
+    [HttpPost, ActionName("DeleteConfirmed")]
     [ValidateAntiForgeryToken]
     public IActionResult DeleteConfirmed(int id)
     {
-        var customer = _context.Customers.Find(id);
+        var customer = _context.Customers.Include(c => c.CustomerServices).ThenInclude(c => c.CustomerServiceDetails).FirstOrDefault(c => c.Id == id);
         if (customer != null)
         {
+            _context.CustomerServiceDetail.RemoveRange(_context.CustomerServiceDetail.Where(cs => cs.CustomerService.CustomerId == id));
+            _context.CustomerServices.RemoveRange(_context.CustomerServices.Where(cs => cs.CustomerId == id));
             _context.Customers.Remove(customer);
             _context.SaveChanges();
         }
