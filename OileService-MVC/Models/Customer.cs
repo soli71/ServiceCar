@@ -16,6 +16,7 @@ namespace OilChangeApp.Data
     {
         public int Id { get; set; }
         public string ServiceName { get; set; }
+        public byte Order { get; set; } 
         public decimal Price { get; set; }
         public List<CustomerServiceDetail> CustomerServiceDetails { get; set; }
     }
@@ -60,6 +61,7 @@ namespace OilChangeApp.Data
     {
         public OilChangeDbContext(DbContextOptions<OilChangeDbContext> options) : base(options)
         {
+            Database.Migrate();
         }
 
         public DbSet<Customer> Customers { get; set; }

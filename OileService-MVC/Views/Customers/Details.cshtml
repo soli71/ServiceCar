@@ -6,14 +6,14 @@
         <!-- ستون سمت راست: فرم ثبت سرویس جدید -->
         <div class="col-md-6 order-md-1">
             <div class="card">
-                     <div class=" fw-bold border-bottom pb-2 px-3 pt-3" style="font-weight:600;font-size:18px">ثبت سرویس جدید</div>
-                 <div class="card-body">
+                <div class=" fw-bold border-bottom pb-2 px-3 pt-3" style="font-weight:600;font-size:18px">ثبت سرویس جدید</div>
+                <div class="card-body">
                     <form asp-action="AddService" method="post">
                         @Html.AntiForgeryToken()
                         <input type="hidden" asp-for="Id" />
 
                         <div class="form-group">
-                            <label asp-for="SelectedOilId" class="font14" >انتخاب روغن</label>
+                            <label asp-for="SelectedOilId" class="font14">انتخاب روغن</label>
                             <select asp-for="SelectedOilId" class="form-control no-box-shadow font14" asp-items="Model.Oils">
                                 <option value="">انتخاب کنید</option>
                             </select>
@@ -26,12 +26,29 @@
                             <span asp-validation-for="Kilometers" class="text-danger font14"></span>
                         </div>
 
+
                         <div class="form-group">
                             <label asp-for="NextServiceKilometers" class="font14">کیلومتر بعدی سرویس</label>
                             <input asp-for="NextServiceKilometers" class="form-control no-box-shadow number-input" inputmode="numeric" />
                             <span asp-validation-for="NextServiceKilometers" class="text-danger font14"></span>
                         </div>
 
+                        <div class=" d-flex justify-content-between">
+                            <div class="form-check d-flex align-items-center">
+                                <input class="form-check-input no-box-shadow" type="checkbox" value="5000" onchange="updateNextServiceKilometers()" />
+                                <label class="form-check-label mx-4 my-1">5000</label>
+                            </div>
+                            <div class="form-check d-flex align-items-center">
+                                <input class="form-check-input no-box-shadow" type="checkbox" value="6000" onchange="updateNextServiceKilometers()" />
+                                <label class="form-check-label mx-4 my-1">6000</label>
+                            </div>
+                            <div class="form-check d-flex align-items-center">
+                                <input class="form-check-input no-box-shadow" type="checkbox" value="7000" onchange="updateNextServiceKilometers()" />
+                                <label class="form-check-label mx-4 my-1">7000</label>
+                            </div>
+                        </div>
+
+                        <hr />
                         <div class="form-group">
                             <label>انتخاب سرویس‌ها</label>
                             @for (int i = 0; i < Model.ServiceList.Count; i++)
@@ -42,7 +59,7 @@
                                            value="@Model.ServiceList[i].Id"
                                            id="service_@Model.ServiceList[i].Id"
                                            style="margin-left: 0; margin-right: 5px;" />
-                                    <label class="form-check-label mx-4 my-1" style="font-size:15px"   for="service_@Model.ServiceList[i].Id">
+                                    <label class="form-check-label mx-4 my-1" style="font-size:15px" for="service_@Model.ServiceList[i].Id">
                                         @Model.ServiceList[i].Name
                                     </label>
                                 </div>
@@ -54,11 +71,11 @@
                 </div>
             </div>
         </div>
-        <!-- ستون سمت چپ: اطلاعات مشتری -->
+
         <div class="col-md-6 order-md-2 mt-3 mt-md-0">
             <div class="card">
-                     <div class="border-bottom pb-2 px-3 pt-3" style="font-weight:600;font-size:18px">جزئیات مشتری    </div>
-                 <div class="card-body">
+                <div class="border-bottom pb-2 px-3 pt-3" style="font-weight:600;font-size:18px">جزئیات مشتری    </div>
+                <div class="card-body">
                     <div class="">نام : @Model.Name</div>
                     <div class="my-3">شماره تلفن : @Model.PhoneNumber</div>
                     <div>خودرو : @Model.CarName</div>
@@ -66,7 +83,7 @@
             </div>
         </div>
 
-      
+
     </div>
 
     <hr />
@@ -135,16 +152,34 @@
 
             numberInputs.forEach(function(input) {
                 input.addEventListener('input', function(e) {
-                    // حذف تمامی کاراکترهای غیر عددی
+                  
                     var value = this.value.replace(/\D/g, '');
 
-                    // افزودن جداکننده هزارگان
                     var formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
                     this.value = formattedValue;
                 });
             });
         });
+
+              function updateNextServiceKilometers(checkbox) {
+            const currentKilometers = parseInt(document.querySelector('input[name="Kilometers"]').value.replace(/,/g, ''), 10) || 0;
+            const input = document.querySelector('input[name="NextServiceKilometers"]');
+            let selectedValues = [];
+
+            document.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
+                if (cb.checked) {
+                    selectedValues.push(parseInt(cb.value, 10));
+                }
+            });
+
+            if (selectedValues.length === 0) {
+                input.value = '';
+            } else {
+                const sum = selectedValues.reduce((acc, val) => acc + val, 0);
+                input.value = currentKilometers + sum;
+            }
+        }
     </script>
 }
 

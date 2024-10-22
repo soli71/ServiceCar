@@ -124,7 +124,7 @@ public class CustomersController : Controller
     .Include(c => c.CustomerServices)
     .FirstOrDefault(c => c.Id == id);
 
-        var serviceList = _context.Services.Select(s => new ServiceViewModel
+        var serviceList = _context.Services.OrderBy(c=>c.Order).Select(s => new ServiceViewModel
         {
             Id = s.Id,
             Name = s.ServiceName,
@@ -140,6 +140,7 @@ public class CustomersController : Controller
                     Kilometers = cs.Kilometers,
                     NextServiceKilometers = cs.NextServiceKilometers,
                     ServicesName = string.Join(", ", cs.CustomerServiceDetails.Select(cs => cs.Services.ServiceName))
+
                 }).OrderByDescending(c => c.ServiceDate).ToList();
 
         var oils = _context.Oils.ToList();

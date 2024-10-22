@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OilChangeApp.Data;
 
@@ -10,9 +11,11 @@ using OilChangeApp.Data;
 namespace OilChangeApp.Migrations
 {
     [DbContext(typeof(OilChangeDbContext))]
-    partial class OilChangeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241022105133_addserviceOrder")]
+    partial class addserviceOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
