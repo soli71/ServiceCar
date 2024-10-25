@@ -36,6 +36,7 @@
     <table class="table table-striped table-bordered">
         <thead class=" text-center fs-6">
             <tr class="rounded-3">
+                <th scope="col">شماره</th>
                 <th scope="col">نام</th>
                 <th scope="col">شماره تلفن</th>
                 <th scope="col">خودرو</th>
@@ -43,9 +44,11 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var customer in Model)
+            @for (int i=0;i<Model.Count();i++)
             {
+                var customer = Model.ElementAt(i);
                 <tr>
+                    <td>@(i + 1)</td>
                     <td>@customer.Name</td>
                     <td>@customer.PhoneNumber</td>
                     <td>@customer.Car?.Name</td>
