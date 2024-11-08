@@ -24,6 +24,8 @@ namespace OilChangeApp.Controllers
         public int? SelectedOilId { get; set; }
         public List<int> SelectedServiceIds { get; set; }
 
+        public bool SendMessage { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var persianCulture = new CultureInfo("fa-IR");

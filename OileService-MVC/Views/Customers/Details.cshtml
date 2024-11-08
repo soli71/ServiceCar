@@ -53,19 +53,29 @@
                             <label>انتخاب سرویس‌ها</label>
                             @for (int i = 0; i < Model.ServiceList.Count; i++)
                             {
-                                <div class="form-check d-flex align-items-center">
-                                    <input class="form-check-input no-box-shadow" type="checkbox"
-                                           name="SelectedServiceIds"
-                                           value="@Model.ServiceList[i].Id"
-                                           id="service_@Model.ServiceList[i].Id"
-                                           style="margin-left: 0; margin-right: 5px;" />
-                                    <label class="form-check-label mx-4 my-1" style="font-size:15px" for="service_@Model.ServiceList[i].Id">
-                                        @Model.ServiceList[i].Name
-                                    </label>
+                                <div class="form-group">
+                                    <div class="form-check d-flex align-items-center">
+                                        <input class="form-check-input no-box-shadow" type="checkbox"
+                                               name="SelectedServiceIds"
+                                               value="@Model.ServiceList[i].Id"
+                                               id="service_@Model.ServiceList[i].Id"
+                                               style="margin-left: 0; margin-right: 5px;" />
+                                        <label class="form-check-label mx-4 my-1 r" style="font-size:15px" for="service_@Model.ServiceList[i].Id">
+                                            @Model.ServiceList[i].Name
+                                        </label>
+                                    </div>
                                 </div>
                             }
                             <span asp-validation-for="SelectedServiceIds" class="text-danger"></span>
                         </div>
+
+                        <hr />
+                        <div class="form-check d-flex align-items-center">
+                            <input asp-for="SendMessage" style="direction:ltr !important"/>
+                            <label class="form-check-label mx-4 my-1" style="font-size:15px;font-weight:500;direction:ltr !important">ارسال پیامک</label>
+                        </div>
+                       <br />
+
                         <button type="submit" class="btn btn-outline-primary">ثبت سرویس</button>
                     </form>
                 </div>

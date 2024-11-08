@@ -124,7 +124,7 @@ public class CustomersController : Controller
     .Include(c => c.CustomerServices)
     .FirstOrDefault(c => c.Id == id);
 
-        var serviceList = _context.Services.OrderBy(c=>c.Order).Select(s => new ServiceViewModel
+        var serviceList = _context.Services.OrderBy(c => c.Order).Select(s => new ServiceViewModel
         {
             Id = s.Id,
             Name = s.ServiceName,
@@ -140,7 +140,6 @@ public class CustomersController : Controller
                     Kilometers = cs.Kilometers,
                     NextServiceKilometers = cs.NextServiceKilometers,
                     ServicesName = string.Join(", ", cs.CustomerServiceDetails.Select(cs => cs.Services.ServiceName))
-
                 }).OrderByDescending(c => c.ServiceDate).ToList();
 
         var oils = _context.Oils.ToList();
@@ -205,15 +204,8 @@ public class CustomersController : Controller
 
             _context.SaveChanges();
 
-            var customer = _context.Customers.Find(model.Id);
-            var services = _context.Services.Where(s => model.SelectedServiceIds.Contains(s.Id)).Select(s => s.ServiceName).ToList();
-
-            var oil = _context.Oils.Find(model.SelectedOilId);
-
-            var concatServices = $" {string.Join(",", services)}";
-            var message = $"مشتری گرامی {customer.Name ?? ""}\r\n سرویس {concatServices} با موفقیت انجام شد .\r\n روغن {oil?.Name ?? ""}\r\n کیلومتر فعلی : {model.Kilometers} \r\n کیلومتر بعدی : {model.NextServiceKilometers} \r\n {ToPersianDate(DateTime.Now)} \r\n";
-
-            await _smsService.SendAsync(customer.PhoneNumber, message);
+            if (model.SendMessage)
+                await SendNotificationAsync(model);
 
             return RedirectToAction(nameof(Details), new { id = model.Id });
         }
@@ -221,6 +213,20 @@ public class CustomersController : Controller
         var viewModel = GetCustomerDetails(model.Id);
 
         return View("Details", viewModel);
+    }
+
+    private async Task SendNotificationAsync
+        (CustomerDetailsViewModel model)
+    {
+        var customer = _context.Customers.Find(model.Id);
+        var services = _context.Services.Where(s => model.SelectedServiceIds.Contains(s.Id)).Select(s => s.ServiceName).ToList();
+
+        var oil = _context.Oils.Find(model.SelectedOilId);
+
+        var concatServices = $" {string.Join(",", services)}";
+        var message = $"مشتری گرامی {customer.Name ?? ""}\r\n سرویس {concatServices} با موفقیت انجام شد .\r\n روغن {oil?.Name ?? ""}\r\n کیلومتر فعلی : {model.Kilometers} \r\n کیلومتر بعدی : {model.NextServiceKilometers} \r\n {ToPersianDate(DateTime.Now)} \r\n";
+
+        await _smsService.SendAsync(customer.PhoneNumber, message);
     }
 
     public string ToPersianDate(DateTime date)
